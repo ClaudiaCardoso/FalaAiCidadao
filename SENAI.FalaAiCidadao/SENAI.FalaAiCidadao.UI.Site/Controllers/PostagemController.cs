@@ -48,9 +48,39 @@ namespace SENAI.FalaAiCidadao.UI.Site.Controllers
                 ViewBag.Eleitor = true;//se sim viewbag recebe true
             else
                 ViewBag.Eleitor = false;
-
             return View(post);
         }
+
+        public ActionResult Edit(Guid id)
+        {
+            Postagem post = postagemServico.FindById(id);
+            PostagemViewModel model = new PostagemViewModel();
+            model.PostagemId = post.PostagemId;
+            model.Regioes = regiaoServico.GetAll();
+            model.RegiaoId = post.RegiaoId;
+            model.TextoPost = post.TextoPost;
+            model.Tipos = tiposServico.GetAll();
+            model.TipoId = post.TipoId;
+            model.TituloPost = post.TituloPost;
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(PostagemViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Postagem post = postagemServico.FindById(model.PostagemId);
+                post.RegiaoId = model.RegiaoId;
+                post.TipoId = model.TipoId;
+                post.TextoPost = model.TextoPost;
+                post.TituloPost = model.TituloPost;
+                postagemServico.Edit(post);
+                return RedirectToAction("Details", new { id = post.PostagemId });
+            }
+            return View(model);
+        }
+
         //[CustomAuthorize(Roles ="POLITICO")]
         public ActionResult TimeLinePostagensPolitico()
         {
@@ -110,7 +140,11 @@ namespace SENAI.FalaAiCidadao.UI.Site.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PostagemViewModel model)
         {
-            if (Request.Files.Count == 0)
+            if (Request.Files.Count > 3)
+            {
+                ModelState.AddModelError("Fotos", "Insira no maximo 3 imagens");
+            }
+            if (Request.Files[0].FileName == "")
             {
                 ModelState.AddModelError("Fotos", "Faça o upload de pelo menos uma foto");
             }
@@ -161,18 +195,22 @@ namespace SENAI.FalaAiCidadao.UI.Site.Controllers
         [CustomAuthorize(Roles = "POLITICO")]
         public ActionResult InserirComentario(Postagem model)
         {
-            Postagem postagem = postagemServico.FindById(model.PostagemId);
-            Comentario coment = new Comentario();
-            Politico politico = (Politico)Session["SessionPolitico"];
-            coment.PoliticoId = politico.PoliticoId;
-            postagem.PostagemId = model.PostagemId;
-            coment.TextoComentario = model.Comentario;
-            coment.PostagemId = postagem.PostagemId;
-            coment.Data = DateTime.Now;
-            coment.Excluido = false;
-            comentarioServico.Add(coment);
+            if (model.Comentario != null)
+            {
+                Postagem postagem = postagemServico.FindById(model.PostagemId);
+                Comentario coment = new Comentario();
+                Politico politico = (Politico)Session["SessionPolitico"];
+                coment.PoliticoId = politico.PoliticoId;
+                postagem.PostagemId = model.PostagemId;
+                coment.TextoComentario = model.Comentario;
+                coment.PostagemId = postagem.PostagemId;
+                coment.Data = DateTime.Now;
+                coment.Excluido = false;
+                comentarioServico.Add(coment);
 
-            return RedirectToAction("DetailsPolitico", "Postagem", new { id = postagem.PostagemId });
+                return RedirectToAction("DetailsPolitico", "Postagem", new { id = postagem.PostagemId });
+            }
+            return RedirectToAction("DetailsPolitico", "Postagem", new { id = model.PostagemId });
         }
     }
 }

@@ -1,93 +1,73 @@
-﻿@model SENAI.FalaAiCidadao.Modelos.Models.Postagem
+﻿@model SENAI.FalaAiCidadao.UI.Site.ViewModels.PostagemViewModel
 
 @{
     ViewBag.Title = "Edit";
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
 
-<h2>Edit</h2>
+<h2>Editar Publicação</h2>
 
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Postagem</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PostagemId)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TituloPost, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TituloPost, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TituloPost, "", new { @class = "text-danger" })
-            </div>
+<div class="card">
+    @using (Html.BeginForm("Edit", "Postagem", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()     
+        <br />
+        <div class="card-header" style="background-color:#118fe2; color:white">
+            <h3 class="card-title">Nova Postagem</h3>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TextoPost, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TextoPost, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TextoPost, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Data, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Data, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EleitorId, "EleitorId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("EleitorId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EleitorId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RegiaoId, "RegiaoId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("RegiaoId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RegiaoId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TipoId, "TipoId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TipoId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TipoId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Excluido, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Excluido)
-                    @Html.ValidationMessageFor(model => model.Excluido, "", new { @class = "text-danger" })
+        <div class="card-body">
+            @Html.HiddenFor(m => m.PostagemId)
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            @Html.LabelFor(model => model.TituloPost, htmlAttributes: new { @class = "control-label" })
+                            @Html.EditorFor(model => model.TituloPost, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TituloPost, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Região</label>
+                        <div>
+                            @Html.DropDownListFor(model => model.RegiaoId, (Model.Regioes)
+                       .Select(option => new SelectListItem
+                       {
+                           Text = option.Nome,
+                           Value = option.RegiaoId.ToString(),
+                           Selected = (Model != null) && (Model.RegiaoId == option.RegiaoId)
+                           }), "Selecione...", new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.RegiaoId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de problema</label>
+                        <div>
+                            @Html.DropDownListFor(model => model.TipoId, (Model.Tipos)
+                       .Select(option => new SelectListItem
+                       {
+                           Text = option.Descicao,
+                           Value = option.TipoId.ToString()
+                       }), "Selecione...", new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.TipoId, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Salvar" class="btn btn-outline-primary" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="col-lg-12">
+                        @Html.LabelFor(model => model.TextoPost, htmlAttributes: new { @class = "control-label" })
+                        <div class="">
+                            @Html.TextAreaFor(model => model.TextoPost, 5, 500, new { @style = "min-width:95% !important; height:325px !important", @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.TextoPost, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}

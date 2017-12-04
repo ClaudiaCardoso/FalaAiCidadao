@@ -22,7 +22,6 @@ namespace SENAI.FalaAiCidadao.UI.Site.Controllers
         {
             return View();
         }
-
         [HttpPost]
         public ActionResult Login(LoginViewModel login)
         {

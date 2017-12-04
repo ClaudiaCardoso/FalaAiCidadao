@@ -53,9 +53,9 @@ namespace SENAI.FalaAiCidadao.UI.Site.Controllers
             {
                 ModelState.AddModelError("Foto", "Selecione uma foto");//adiciono um erro a model
             }
-            if (eleitorServico.VericicarCPFCadastrado(model.Cep)) //verifico se o cpf ja foi cadastrado
+            if (eleitorServico.VericicarCPFCadastrado(model.CPF)) //verifico se o cpf ja foi cadastrado
             {
-                ModelState.AddModelError("Cep", "CPF já cadastrado");
+                ModelState.AddModelError("CPF", "CPF já cadastrado");
             }
             if (eleitorServico.VerificarEmailExiste(model.Email)) //verifico se o cpf ja foi cadastrado
             {

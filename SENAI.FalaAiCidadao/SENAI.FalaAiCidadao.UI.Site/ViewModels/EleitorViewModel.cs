@@ -32,7 +32,6 @@ namespace SENAI.FalaAiCidadao.UI.Site.ViewModels
         [DataType(DataType.Date, ErrorMessage = "Data em formato inválido")]
         public DateTime DataNascimento { get; set; }
 
-
       //  [Required(ErrorMessage = "Selecione uma foto.")]
         [ScaffoldColumn(false)]
         public HttpPostedFileBase Foto { get; set; }

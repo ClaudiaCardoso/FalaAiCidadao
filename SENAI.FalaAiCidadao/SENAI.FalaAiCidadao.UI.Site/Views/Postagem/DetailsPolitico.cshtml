@@ -58,12 +58,13 @@
         else
         {
         <div class="row">
-            <div class="col-3">
+            <div class="col-12">
                 @using (Html.BeginForm("InserirComentario", "Postagem", FormMethod.Post))
                 {
                     @Html.HiddenFor(p => p.PostagemId)
                     <label>Insira uma solução: </label>
-                    @Html.TextAreaFor(m => m.Comentario, 10, 500, new { htmlAttributes = new { @class = "form-group" } })
+                    @Html.TextAreaFor(model => model.Comentario, 5, 500, new { @style = "min-width:100% !important; !important", @class = "form-control" })
+                    <br />
                     <input type="submit" value="Comentar" class="btn btn-outline-primary" />
                 }
 

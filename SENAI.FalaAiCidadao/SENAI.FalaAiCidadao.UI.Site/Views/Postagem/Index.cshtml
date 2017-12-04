@@ -1,15 +1,23 @@
 ﻿@model IEnumerable<SENAI.FalaAiCidadao.Modelos.Models.Postagem>
-
+@{
+    ViewBag.Title = "Index - Admin";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
 <p>
     ADMIN
 </p>
+@Html.ActionLink("Gerenciamento", "Index", "Admin")
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Eleitor.Nome)
+            @Html.Label("Imagens")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Regiao.Nome)
+            @Html.DisplayNameFor(model => model.Eleitor.Nome)
+        </th>
+
+        <th>
+            @Html.Label("Região")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Tipo.Descicao)
@@ -29,40 +37,48 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Eleitor.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Regiao.Nome)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Tipo.Descicao)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TituloPost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TextoPost)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Data)
-        </td>
-        <td>
-            @if (item.Excluido == true)
-            {
-                <label>Sim</label>
-            }
-            else
-            {
-                <label>Não</label>
-            }
-        </td>
-        <td>
-            @Html.ActionLink("Excluir", "ExcluirPostagem", new { id=item.PostagemId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td class="col-4">
+                @foreach (var imagem in item.Imagens)
+                {
+                    <img style="width:100px;height:100px" src="~/Imagens/Postagem/@imagem.NomeImagem" />
+                }
+
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Eleitor.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Regiao.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo.Descicao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TituloPost)
+            </td>
+            <td>                
+                @(item.TextoPost.Substring(0, item.TextoPost.Length > 25 ? item.TextoPost.Length : 25) + "...")
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @if (item.Excluido == true)
+                {
+                    <label>Sim</label>
+                }
+                else
+                {
+                    <label>Não</label>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Excluir", "ExcluirPostagem", new { id = item.PostagemId })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -405,6 +405,7 @@
     <Content Include="Views\Home\_LoginRoot.cshtml" />
     <Content Include="Views\Postagem\DetailsPolitico.cshtml" />
     <Content Include="Views\Postagem\TimeLinePostagensPolitico.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ImagensLayout\" />

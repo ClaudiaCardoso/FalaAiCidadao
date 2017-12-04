@@ -4,6 +4,8 @@
     ViewBag.Title = "Details";
     Layout = "~/Views/Shared/_LayoutLogado.cshtml";
 }
+
+@Html.HiddenFor(m => m.PostagemId)
 <br />
 <div class="card">
     <div class="card-header" style="background-color:#118fe2; color:white">
@@ -30,6 +32,7 @@
         @if ((bool)ViewBag.Eleitor == true)
         {
             <a class="float-lg-right btn btn-outline-primary" href="@Url.Action("DeletePost", "Postagem", new { id = Model.PostagemId })" onclick="return confirm('Deseja realmente deletar essa postagem?')">Deletar Postagem</a>
+            @Html.ActionLink("Editar", "Edit", new { id = Model.PostagemId, @class = "float-lg-right btn btn-outline-primary" });
             <br />
             <br />
         }
